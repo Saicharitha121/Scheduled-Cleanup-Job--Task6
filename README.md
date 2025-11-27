@@ -7,19 +7,47 @@ Azure Resources Needed
 
 - Azure SQL Database
 
-Must contain an Orders table with a OrderDate field.
+- Must contain an Orders table with a OrderDate field.
 
-- Azure Storage Account
+- Server firewall must allow Azure services or Function App IP.
 
-Container: archive
+Azure Storage Account
+
+- Container: archive
 
 Output folder structure:
 archive/orders/YYYY/MM/DD/
 
-- Azure Function App
+-Azure Function App
 
-- Runtime: Python or C#
+-Runtime: Python or C#
+
+-Timer trigger enabled.
 
 
-  
+Local Development Requirements
 
+- VS Code or Visual Studio
+
+- Azure Functions Core Tools
+
+- Python 3.9+ (if using Python)
+
+ - Azure CLI
+
+
+What the Function Does
+
+- Connects to Azure SQL.
+
+- Selects records older than 30 days using batching (e.g., 1000 rows).
+
+- Generates an NDJSON file with one JSON object per line.
+
+- Saves the file to Blob Storage:
+
+- Deletes the same rows from SQL inside a transaction.
+
+NDJSON Example Output
+{"OrderID":1, "Customer":"Sai", "Amount":200, "OrderDate":"2024-09-20"}
+{"OrderID":2, "Customer":"Charitha", "Amount":150, "OrderDate":"2024-09-10"}
